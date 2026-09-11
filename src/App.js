@@ -10,6 +10,7 @@ function App() {
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFileChange = (e) => {
     setFiles(Array.from(e.target.files));
@@ -127,7 +128,77 @@ function App() {
         <span className="local-status">
           <span>✓</span>Browser only
         </span>
+        <button
+          type="button"
+          className="help-button"
+          onClick={() => setShowHelp(true)}
+        >
+          How to export from Outlook
+        </button>
       </header>
+
+      {showHelp && (
+        <div
+          className="modal-backdrop"
+          onClick={() => setShowHelp(false)}
+          role="presentation"
+        >
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="export-help-heading"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-header">
+              <h2 id="export-help-heading">Export your Outlook inbox to CSV</h2>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setShowHelp(false)}
+                aria-label="Close instructions"
+              >
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <h3>Outlook desktop app (Windows)</h3>
+              <ol>
+                <li>Select the folder you want to export (for example, your Inbox).</li>
+                <li>Go to <strong>File &gt; Open &amp; Export &gt; Import/Export</strong>.</li>
+                <li>Choose <strong>Export to a file</strong>, then click <strong>Next</strong>.</li>
+                <li>Select <strong>Comma Separated Values</strong>, then click <strong>Next</strong>.</li>
+                <li>Pick the folder to export (Inbox or a subfolder) and click <strong>Next</strong>.</li>
+                <li>Choose a save location and file name ending in <strong>.csv</strong>, then click <strong>Next</strong>.</li>
+                <li>Click <strong>Finish</strong> to create the CSV file.</li>
+              </ol>
+
+              <h3>Outlook on the web (OWA)</h3>
+              <p>
+                Outlook on the web does not offer a built-in CSV export. Use the desktop
+                app above, or open a mailbox rule/export add-in, or forward messages to
+                a PST and convert with the desktop client.
+              </p>
+
+              <h3>Column requirements for this tool</h3>
+              <p>
+                The exported CSV must include at least <strong>Subject</strong> and{" "}
+                <strong>Body</strong> columns. Exports that also include a{" "}
+                <strong>ReceivedTime</strong> column will be sorted and dated more
+                accurately; otherwise dates are parsed from "Sent:" text inside the
+                message body.
+              </p>
+
+              <h3>Tip</h3>
+              <p>
+                For large mailboxes, export in smaller date-range batches (for example,
+                one CSV per month) &mdash; you can upload multiple files at once in this
+                tool and they will be merged automatically.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main>
         <section className="workspace">
