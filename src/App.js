@@ -11,8 +11,6 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const today = new Date().toISOString().split("T")[0];
-
   const handleFileChange = (e) => {
     setFiles(Array.from(e.target.files));
     setError(null);
